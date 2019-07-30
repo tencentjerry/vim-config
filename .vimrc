@@ -1,9 +1,14 @@
 call plug#begin('~/.vim/plugged')
 Plug 'itchyny/lightline.vim'
 
+Plug 'lfv89/vim-interestingwords'
+
+Plug 'mhinz/vim-signify'
 " 代码补全插件
 Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer',  'for': ['c', 'cpp'] }
 Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
+
+Plug 'derekwyatt/vim-fswitch'
 
 " .h .cpp切换
 Plug 'vim-scripts/a.vim'
@@ -25,7 +30,10 @@ Plug 'skywind3000/asyncrun.vim'
 
  Plug 'octol/vim-cpp-enhanced-highlight'
 
+ Plug 'juneedahamed/svnj.vim'
+
 call plug#end()
+
 
 " -------------------------------------常规配置----------------------------------
 let mapleader=";"
@@ -38,11 +46,25 @@ set shiftwidth=4
 set expandtab
 set nu
 
+set hlsearch
+set ignorecase
+set fileformat=dos
 set fileencodings=utf-8,gb2312,gb18030,gbk,ucs-bom,cp936,latin1
 set enc=utf8
 set fencs=utf8,gbk,gb2312,gb18030
 colorscheme monokai
 
+nmap <silent> <Leader>sw :FSHere<cr>
+
+nnoremap <silent> <leader>k :call InterestingWords('n')<cr>
+nnoremap <silent> <leader>K :call UncolorAllWords()<cr>
+
+" 正向遍历同名标签
+ nmap <Leader>tn :tnext<CR>
+" " 反向遍历同名标签
+ nmap <Leader>tp :tprevious<CR>
+
+let g:interestingWordsTermColors = ['154', '121', '211', '137', '214', '222']
 "cpp-enhanced-highlight
 ""高亮类，成员函数，标准库和模板
 let g:cpp_class_scope_highlight = 1
@@ -54,6 +76,23 @@ let g:cpp_concepts_highlight = 1
 let g:cpp_experimental_template_highlight = 1
 "  ------------------------------------End--------------------------------------
 
+" 设置要检查的VCS
+ let g:signify_vcs_list = ['svn']
+" " 插入模式下指定updatetime时间后无操作将缓存区交换文件写入磁盘
+ let g:signify_cursorhold_insert     = 1
+" " 正常模式下指定updatetime时间后无操作将缓存区交换文件写入磁盘
+ let g:signify_cursorhold_normal     = 1
+" " 缓冲区被修改时更新符号
+ let g:signify_update_on_bufenter    = 0
+" " vim获取焦点时更新符号
+ let g:signify_update_on_focusgained = 1
+" " 键盘映射
+ nnoremap <leader>gt :SignifyToggle<CR>
+ nnoremap <leader>gh :SignifyToggleHighlight<CR>
+ nnoremap <leader>gr :SignifyRefresh<CR>
+ nnoremap <leader>gd :SignifyDebug<CR>
+
+ nnoremap <leader>dm :%s/\r//g<CR>
 
 let g:ycm_global_ycm_extra_conf='~/.vim/plugged/YouCompleteMe/third_party/ycmd/.ycm_extra_conf.py'
 
@@ -125,6 +164,8 @@ endif
 " 目录中，避免污染工程目录
  let g:gutentags_cache_dir = expand('~/.cache/tags')
 "
+let $GTAGSLABEL='native'
+let g:gutentags_define_advanced_commands = 1
 " " 配置 ctags 的参数
  let g:gutentags_ctags_extra_args = []
  let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']
@@ -142,6 +183,9 @@ endif
 "
 " " change focus to quickfix window after search (optional).
  let g:gutentags_plus_switch = 1
+
+
+
 "
 " " default keymap
 " "<leader>csFind symbol (reference) under cursor
