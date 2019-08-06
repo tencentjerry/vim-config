@@ -37,6 +37,7 @@ call plug#end()
 
 " -------------------------------------常规配置----------------------------------
 let mapleader=";"
+
 set laststatus=2
 
 syntax enable
